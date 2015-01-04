@@ -9,6 +9,8 @@ Check out the deployed web app at:
 https://umarfarooq360.shinyapps.io/ML_Kit/
 
 __Usage__
+
+
 1. Upload the training file. CSV and XLS formats are accepted.
 2. Select the dependent variable and the features.
 3. Select training parameters.
