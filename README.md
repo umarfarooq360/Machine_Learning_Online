@@ -3,11 +3,13 @@ ML_Kit
 
 Online Machine Learning library, coded in R interfaced with HTML/CSS/JavaScript using Shiny. Supports Artificial Neural Network for now. SVM, Naive Bayes, Principal Component Analysis support coming soon. 
 
-###Deployment and Usage
+####Demo
+
 Check out the deployed web app at:
 
 https://umarfarooq360.shinyapps.io/ML_Kit/
 
+###Deployment and Usage
 __Preview__
 
 ![Machine Learning App Preview](https://raw.githubusercontent.com/umarfarooq360/ML_Kit/master/app_preview.png)
