@@ -8,6 +8,10 @@ Check out the deployed web app at:
 
 https://umarfarooq360.shinyapps.io/ML_Kit/
 
+__Preview__
+
+![Machine Learning App Preview](https://raw.githubusercontent.com/umarfarooq360/ML_Kit/master/app_preview.png)
+
 __Usage__
 
 
