@@ -9,6 +9,8 @@ library(shiny);
 
 library(neuralnet);
 
+#library();
+
 train_data  <<- NULL;
 
 shinyServer(function(input, output) {
@@ -54,7 +56,7 @@ shinyServer(function(input, output) {
     
     #return the check and radio boxes based on headers
      return (
-       div(splitLayout(
+       div(h3("Variables Selection"),splitLayout(
        (checkboxGroupInput("features_checkbox", label=h5("Features"),
                           choices = colnames(train_data))       
        
@@ -138,11 +140,11 @@ shinyServer(function(input, output) {
   
   output$ann_result <-renderTable({
     
-    if(input$runIt == 0){
+  if(input$runIt == 0){
       return(NULL)
     }
-    if(input$runIt >0 ){
-     
+  if(input$runIt >0 ){
+      withProgress(message="Processing!", value=0.1, {
       #return("trainSet");
       
       #Read the file AGAIN lol
@@ -153,17 +155,24 @@ shinyServer(function(input, output) {
       featureString = paste(input$features_checkbox[1:length(input$features_checkbox) ], collapse=" + ");
       index = 1:nrow(train_data);
       
+      #UPdate progress
+      incProgress(0.2, detail ="Parsing the data");
+      
+      
       #find index of stuff used for training
       if(input$sample_from_train){
-      trainIndex = sample(index, trunc(length(index)* input$percent_train ));
-      testSet = train_data[ -trainIndex ,  ];
-      trainSet = train_data[ trainIndex , ];
+          trainIndex = sample(index, trunc(length(index)* input$percent_train ));
+          testSet = train_data[ -trainIndex ,  ];
+          trainSet = train_data[ trainIndex , ];
       }else if(!input$sample_from_train){
         trainSet = train_data ;
         testSet =  read.csv(input$testfile$datapath, header=input$header, sep=input$sep, 
                             quote=input$quote)
         
       }
+      
+      
+      incProgress(0.2, detail ="Creating ANN");
       
       
       #Create the ANN
@@ -175,6 +184,10 @@ shinyServer(function(input, output) {
       
       
       #return(paste(input$features_checkbox[1:length(input$features_checkbox) ], collapse=" , ")  )
+      
+      
+      incProgress(0.5, detail ="Testing on provided Data")
+      
       
       testSet_Features = subset(testSet,select=input$features_checkbox  );
       #return(testSet_Features);
@@ -200,12 +213,39 @@ shinyServer(function(input, output) {
       
       return(testSet)
     
+    })
+    
+    
+      
     }
-    
-    
   })
   
+  #---------------------------------
+  #           SVM Server Methods
+  #--------------------------------
   
+  
+  output$svm_contents <- renderTable({
+    
+    # input$file_svm will be NULL initially. After the user selects
+    # and uploads a file, it will be a data frame with 'name',
+    # 'size', 'type', and 'datapath' columns. The 'datapath'
+    # column will contain the local filenames where the data can
+    # be found.
+    
+    inFile <- input$file_svm
+    
+    if (is.null(inFile))
+      return( NULL)
+    
+        
+    train_data <<- read.csv(inFile$datapath, header=input$header, sep=input$sep, 
+                            quote=input$quote)
+    
+    features_list = train_data[1,]; 
+    
+    return(train_data[1:10,]);
+  })
   
   
   
