@@ -149,6 +149,10 @@ shinyServer(function(input, output) {
               #Should the variables be scaled           
                checkboxInput("scale_variables" , label=h5("Scale Variables"), value=F ), helpText("Should the variables be scaled"),
               
+              checkboxInput("scale_output" , label="Scale Output", value=F ), helpText("Should the 
+                                                   logistic function be applied to the output"),
+              
+              
               #The options to choose testing data from
                hr(),h4("Testing Parameters"), 
                checkboxInput("sample_from_train",label="Sample From Training Data" , value=FALSE),
@@ -292,7 +296,7 @@ shinyServer(function(input, output) {
         
         #results in printing of stats
         output$ann_printstats <- renderUI({
-          return( div(downloadButton('ann_downloadData', 'Download Output')) )
+          return( div(downloadButton('ann_downloadData', 'Download Output'),  ) )
         })
         
       }
