@@ -19,10 +19,12 @@ shinyUI(
   # Show a plot of the generated distribution
   
   tabsetPanel( 
-    tabPanel(title="Artificial Neural Network",
+    tabPanel(title="Machine Learning Application",
   sidebarPanel(
                     
-                h3("Model Parameters"),
+               h3("Choose Model Type"), selectInput("modeltype",label='Select Model from the options',choices=
+                                list("Artificial Neural Network"=1, "Support Vector Machine"=2 )) ,hr(),
+               h3("Model Parameters"),
     fileInput('file1', h5('Choose Training Data File (CSV)'),
               accept=c('text/csv', 
                        'text/comma-separated-values,text/plain', 
@@ -48,7 +50,7 @@ shinyUI(
     
     uiOutput(outputId = "features"),
     textOutput(outputId = "test_checkbox"),
-    textOutput(outputId = "feature_error"),
+    div(textOutput(outputId = "feature_error"), style="color:red;font-weight:200"),
     uiOutput(outputId = "ann_parameters")
     
       
@@ -66,59 +68,14 @@ mainPanel(
     #This is the preview of read file                                                                    
     tableOutput(outputId = "contents")
   
- ,hr() ,h4("ANN Plot"),plotOutput("ann_plot"),hr(),
+ ,hr() ,h4("Model Plot"),plotOutput("ann_plot"),hr(),
 
-  h4("ANN Overview"), uiOutput("ann_printstats"),hr(),h4("ANN Output") ,tableOutput(outputId = "ann_result")   )   )
-  , width=7)
+  h4("Model Overview"), uiOutput("ann_printstats"),hr(),h4("Model Output") ,tableOutput(outputId = "ann_result")   )   )
+  , width=7)  #main Panel ends here
+   
 
-
-) 
-
-  #The next next panel for SVM starts here
-  ,tabPanel(title="Support Vector Machine", sidebarPanel(
-    h3("Model Parameters"),
-    #File input Code
-    fileInput('file_svm', h5('Choose Data File (CSV)'),
-              accept=c('text/csv', 
-                       'text/comma-separated-values,text/plain', 
-                       '.csv')),
-    tags$hr(),
-    #
-    splitLayout( div(checkboxInput('header', 'Header', TRUE),
-                     radioButtons('sep', 'Separator',
-                                  c(Comma=',',
-                                    Semicolon=';',
-                                    Tab='\t'),
-                                  ',')),
-                 radioButtons('quote', 'Quote',
-                              c(None='',
-                                'Double Quote'='"',
-                                'Single Quote'="'"),
-                              '"'))
-    ,uiOutput(outputId = "svm_features"),
-    textOutput(outputId = "svm_test_checkbox"),
-    textOutput(outputId = "svm_feature_error"),
-    uiOutput(outputId = "svm_parameters")
-    
-    
-    
-    
-    ), #SVM sidebar panel end 
-    mainPanel(
-      #Panel only displayed after file is read
-      conditionalPanel (condition = "output.svm_parameters !== null" , div( h4("Preview Of Read Data: "), helpText("Showing 10 Columns only"), 
-        #This is the preview of read file                                                                    
-        tableOutput(outputId = "svm_contents")        
-                                                                            
-      )  )  #conditional panel end
-      )#SVM Main Panel end
-          
-          
-          
-          
-          ), #SVM Tab panel ends here
-
-    id=c("ANN" , "SVM"), type="tabs" ,position="above" )  #The code for all tabs (tabsetPanel) ends here
+   )  #TabPanel ends here
+  ,id=c("MLAPP" ), type="tabs" ,position="above" )  #The code for all tabs (tabsetPanel) ends here
   ) #fluidPage ends here
 )  #the app ends here
 
